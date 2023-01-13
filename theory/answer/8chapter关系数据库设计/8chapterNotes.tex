@@ -1,0 +1,174 @@
+
+\documentclass{dingjia}
+
+\ctexset{autoindent=false}
+\setlength\parindent{0pt}
+
+\begin{document}
+
+
+\chapter{关系数据库设计}
+
+\section{好的关系设计的特点}
+
+函数依赖 functional dependency， $dept_{name} \rightarrow budget$
+
+有损分解 lossy decomposition, 无损分解 lossless decomposition
+
+\section{原子域和第一范式}
+
+一个域是原子的 atomic,如果该域的元素被认为是不可分的单元。如果关系模式 R 的所
+有属性的域都是原子的，那 R 属于第一范式。
+
+使用以集合为值的属性会导致冗余存储数据的设计，进而会导致不一致。如为一个教师
+存储一个课程标识号的集合，并为每一课程存储一个教师标识号的集合。数据变动时，
+必须两处都变动，不然数据库可能处于不一致的状态。
+
+另外，如果只保留其中一个集合，将避免重复的值，然而，只保留其中一个集合将使查
+询变得复杂，并且也不好决定究竟保留哪一个。
+
+在许多含有复杂结构的实体域中，强制使用第一范式反而会给应用程序带来不必要的负
+担。
+
+\section{使用函数依赖进行分解}
+
+\subsection{码和函数依赖}
+
+本书表示法：
+\begin{enumerate}
+\item 一般情况下，用小写希腊字母表示属性集（也可能是模式，也有可能不是
+  ）；r(R)表示该关系模式是关系 r 的,R 表示属性集。不过我们常只用 R 来简化表示。
+  一个关系模式必然是一个属性集，但并非所有的属性集都是模式。
+\item K 是 r(R)的超码。
+
+\item  实例：一个关系在任意给定时间内都有特定的值。如关系 r 的实例。
+\end{enumerate}
+
+一个关系满足所有现实约束的实例，被称为关系的合法实例 legal instance.
+
+重新定义超码K概念如下：给定关系 r(R)，其任意合法实例中的元组对 $t_1$ 和 $t_2$ 总
+满足，若 $t_1 \neq t_2$ ，则 $t_1[K] \neq t_2[K]$ 。显然，如果 r 中没有两条元组
+在 K 上具有相同的值，那么在 r 中一个 K(超码）值唯一标识一条元组。
+
+考虑关系模式r(R)，另 $\alpha \subseteq R \text{ and } \beta \subseteq R$:
+\begin{enumerate}
+\item 给定r(R)的一个实例，如果实例中任意元组对 $t_1,t_2$，若 $t_1[\alpha] = t_2[\alpha]$,
+  则$t_1[\beta] = t_2[\beta]$，那么这个实例满足satisfy函数依赖 $\alpha \rightarrow \beta$。
+
+\item 如果r(R)所有实例都满足函数依赖 $\alpha \rightarrow \beta$，则我们说函
+  数依赖在r(R)上成立。
+\end{enumerate}
+
+使用函数依赖这一概念，我们说如果函数依赖 $K \rightarrow R$ 在r(R)上成立，则K
+是r(R)的一个超码。
+
+函数依赖使我们可以表示不能用超码表示的约束。
+\[ inst\_dept ( ID, name, salary, dept\_name, building, budget)\]
+\[ ID, dept\_name \rightarrow name, salary, building, budget \]
+
+有些函数依赖被称为平凡的trivial,因为它们在所有关系中都满足。一般地，如果 $
+\beta \subseteq \alpha$,则形如 $\alpha \rightarrow \beta$的函数依赖是平凡的。
+重要的是，要认识到一个关系实例可能满足某些函数依赖，他们并不需要在关系的模式
+上成立。如函数依赖可以只对应于关系的某个子属性集。
+
+F集合的闭包closure $F^+$,也就是能够从给定F集合推导出的所有函数依赖的集合。
+
+\subsection{Boyce-Codd范式}
+
+我们能够达到的比较满意的范式之一是Boyce-Codd Normal Form,BCNF。它消除所有基
+于函数依赖能够发现的冗余。
+
+具有函数依赖集F的关系模式R属于BCNF的条件是，对 $F^+$ 中所有形如 $\alpha
+\rightarrow \beta$ 的函数依赖，下面至少有一项成立：
+\begin{itemize}
+\item $\alpha \rightarrow \beta$ 是平凡的函数依赖（即 $\beta \subseteq \alpha$
+\item $\alpha$ 是模式R的一个超码
+\end{itemize}
+
+一个数据库设计属于BCNF的条件是，构成该设计的关系模式集中的每个模式都属于BCNF。
+
+设R为不属于BCNF的一个模式，则存在至少一个非平凡的函数依赖 $\alpha
+\rightarrow \beta$,其中 $\alpha$ 不是R的超码。我们可在设计中用两个模式取代R：
+\begin{itemize}
+\item $ (\alpha \cup \beta)$
+\item $ (R - (\beta - \alpha))$
+\end{itemize}
+
+在 $inst\_dept ( ID, name, salary, dept\_name, building, budget)$ 中，
+$\alpha = dept\_name \quad \beta = {building, budget}$ , inst\_dept被取代为
+\begin{itemize}
+\item $(\alpha \cup \beta) = (dept\_name, building, budget)$
+\item $(R - (\beta - \alpha)) = (ID, name, salary, dept\_name)$
+\end{itemize}
+在这个例子中，$\beta - \alpha = \beta$。
+
+\subsection{BCNF和保持依赖}
+
+我们已经看到多种表达数据库一致性约束的方式：主码约束、函数依赖、CHECK约束，
+断言和触发器。每次数据库更新时检查这些约束的开销很大，因此需要将其设计为能够
+高效检查的约束。
+
+其实按照定义任何只包含两个属性的模式都属于BCNF。
+
+并与我们的设计使得该函数依赖的强制实施在计算上很困难，因此我们的设计不是保持
+依赖的，dependency preserving.
+
+\subsection{第三范式}
+
+BCNF要求所有非平凡函数依赖都形如 $\alpha \rightarrow \beta$，其中\alpha为一
+个超码。3CNF放宽了这个约束，它允许左侧不是超码的某些非平凡的函数依赖.
+\begin{description}
+\item[第三范式] 对于 $F^+$中所有形如 $\alpha \rightarrow \beta$ 的函数依赖，以下至少有一
+  项成立：
+  \begin{itemize}
+  \item $\alpha \rightarrow \beta$ 是一个平凡的函数依赖
+  \item $\alpha$ 是R中的一个超码
+  \item $\beta - \alpha$ 中的每个属性A都包含于R的\textbf{某一个}候选码中
+  \end{itemize}
+\end{description}
+
+只满足3NF定义中第三个条件的依赖 $\alpha \rightarrow \beta$ 在BCNF中是不成立
+的。
+
+\subsection{更高的范式}
+
+\section{函数依赖理论}
+
+\subsection{函数依赖集的闭包}
+
+给定模式上的函数依赖集F，我们可以证明某些其他的函数依赖在模式上也成立。我们
+称这些函数依赖被F“逻辑蕴含”。当检验范式时，只考虑给定的函数依赖集是不够的；
+除此之外，还需要考虑模式上成立的所有函数依赖。
+
+更正式地，给定关系模式r(R)，如果r(R)的每一个满足F的实例也满足f，则R上的函数
+依赖f被r上的函数依赖集F逻辑蕴含logically imply.
+
+另F为一个函数依赖集。F的闭包是被F逻辑蕴含的所有函数依赖的集合，记作 $F^+$.给
+定F，可以由函数依赖的形式化定义直接计算出 $F^+$.
+
+Armstrong公理Armstrong's axiom：
+\begin{itemize}
+\item[自反律 reflexivity rule] 若 $\alpha$ 为一个属性集，且 $\beta \subseteq
+  \alpha$，则$\alpha \rightarrow \beta$ 成立。
+\item[增补律 augmentation rule] 若 $\alpha \rightarrow \beta$ 成立且$\gamma$
+  为一属性集，则 $\gamma\alpha \rightarrow \gamma\beta$成立
+\item[传递律 transitivity rule] 若 $\alpha \rightarrow \beta$ 和 $\beta
+  \rightarrow \gamma$ 成立，则 $\alpha \rightarrow \gamma$ 成立。
+\end{itemize}
+
+虽然 Armstrong公理是完备的，但直接用它们计算$F^+$会很麻烦，可使用推导出的其他规则
+\begin{itemize}
+\item[合并律 union rule] 若 $\alpha \rightarrow \beta$ 和 $\alpha
+  \rightarrow \gamma$ 成立，则 $\alpha \rightarrow \beta\gamma$ 成立。
+\item[分解律 decomposition] 若 $\alpha \rightarrow \beta\gamma$成立，
+  则 $\alpha \rightarrow \beta$ 和 $\alpha \rightarrow \gamma$ 成立。
+\item[伪传递律 pseudotransitivity rule] 若 $\alpha$ 为一个属性集，且 $\beta
+  \subseteq \alpha$，则$\alpha \rightarrow \beta$ 成立。
+\end{itemize}
+
+\subsection{属性集的闭包}
+
+$\alpha \rightarrow \beta$, $\beta$被$\alpha$函数确定functionally determine
+
+
+\end{document}

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/sd44/tmp/database-system-concepts/5chapter高级SQL/pqxx/build",
+  "command": "/usr/bin/g++  -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/pqxx/build -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/pqxx -isystem /usr/include/postgresql -isystem /usr/include/postgresql/13/server -fsanitize=address -fsanitize=leak -fno-omit-frame-pointer -fprofile-arcs -ftest-coverage -std=gnu++17 -o CMakeFiles/usepqxx.dir/usepqxx.cxx.o -c /home/sd44/tmp/database-system-concepts/5chapter高级SQL/pqxx/usepqxx.cxx",
+  "file": "/home/sd44/tmp/database-system-concepts/5chapter高级SQL/pqxx/usepqxx.cxx"
+}
+]

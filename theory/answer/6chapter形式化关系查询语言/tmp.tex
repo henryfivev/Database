@@ -1,0 +1,13 @@
+
+\documentclass{dingjia}
+
+\ctexset{autoindent=false}
+\setlength\parindent{0pt}
+
+\begin{document}
+\begin{alignat*}
+   t1 & \leftarrow \Pi_{city}(\sigma_{company\_name = "Small\ Bank\ Corporation"}(company))\\
+  result & = \Pi_{DISTINCT\ company\_name}(company) \\
+  & -{DISTINCT\ company\_name}(company \triangleright t1)
+\end{alignat*}
+\end{document}

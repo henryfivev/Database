@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -DQT_SQL_LIB -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build/Danteng_autogen/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/include/x86_64-linux-gnu/qt5/QtSql -fPIC -std=gnu++17 -o CMakeFiles/Danteng.dir/Danteng_autogen/mocs_compilation.cpp.o -c /home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build/Danteng_autogen/mocs_compilation.cpp",
+  "file": "/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build/Danteng_autogen/mocs_compilation.cpp"
+},
+{
+  "directory": "/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -DQT_SQL_LIB -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql -I/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/build/Danteng_autogen/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/include/x86_64-linux-gnu/qt5/QtSql -fPIC -std=gnu++17 -o CMakeFiles/Danteng.dir/danteng.cpp.o -c /home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/danteng.cpp",
+  "file": "/home/sd44/tmp/database-system-concepts/5chapter高级SQL/qtsql/danteng.cpp"
+}
+]
